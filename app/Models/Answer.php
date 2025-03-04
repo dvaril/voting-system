@@ -31,8 +31,4 @@ final class Answer extends Model
         'created_at' => 'datetime',
     ];
 
-    public function formInstance(): BelongsTo
-    {
-        return $this->belongsTo(FormInstance::class);
-    }
 }
