@@ -31,4 +31,8 @@ final class Answer extends Model
         'created_at' => 'datetime',
     ];
 
+    public function school(): BelongsTo
+    {
+        return $this->belongsTo(School::class);
+    }
 }
