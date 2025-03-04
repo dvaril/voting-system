@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Filament\Support\View\Components\Modal;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,8 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureCommands();
 
         $this->configureModels();
+
+        $this->configureFilament();
     }
 
     /**
@@ -44,5 +47,13 @@ final class AppServiceProvider extends ServiceProvider
     private function configureModels(): void
     {
         Model::shouldBeStrict();
+    }
+
+    /**
+     * Configure the filament components
+     */
+    private function configureFilament(): void
+    {
+        Modal::closedByClickingAway(false);
     }
 }
