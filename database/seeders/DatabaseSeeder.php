@@ -18,7 +18,8 @@ final class DatabaseSeeder extends Seeder
     {
         User::factory()->create([
             'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => 'admin@gmail.com',
+            'password' => Hash::make('password'),
         ]);
 
         Answer::factory()->count(50)->createUnansweredRecord();
