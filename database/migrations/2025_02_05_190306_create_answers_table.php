@@ -5,8 +5,7 @@ declare(strict_types=1);
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\StudySpecializationEnum;
-use App\Models\FormInstance;
+use App\Models\School;
 
 return new class extends Migration
 {
@@ -18,13 +17,15 @@ return new class extends Migration
     {
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedTinyInteger('overall_rating');
-            $table->unsignedTinyInteger('teacher_approach_rating');
-            $table->unsignedTinyInteger('expectation_fulfillment_rating');
-            $table->enum('specialization', StudySpecializationEnum::getValues());
-            // TODO: Add school attribute
-            $table->foreignIdFor(FormInstance::class)->constrained('form_instances');
+            $table->uuid('access_token');
+            $table->string('specialization', 255);
+            $table->unsignedTinyInteger('overall_rating')->nullable()->default(null);
+            $table->unsignedTinyInteger('teacher_approach_rating')->nullable()->default(null);
+            $table->unsignedTinyInteger('expectation_fulfillment_rating')->nullable()->default(null);
+            $table->dateTime('answered_at')->nullable()->default(null);
+            $table->foreignIdFor(School::class)->nullable()->default(null)->constrained('schools');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
