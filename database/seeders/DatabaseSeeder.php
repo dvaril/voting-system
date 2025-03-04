@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Answer;
-use App\Models\FormInstance;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 final class DatabaseSeeder extends Seeder
 {
@@ -21,9 +21,7 @@ final class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        FormInstance::factory()
-            ->has(Answer::factory()->count(10))
-            ->count(10)
-            ->create();
+        Answer::factory()->count(50)->createUnansweredRecord();
+        Answer::factory()->count(50)->createAnsweredRecord();
     }
 }
