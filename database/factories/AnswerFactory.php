@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\StudySpecializationEnum;
 use App\Models\Answer;
+use App\Models\School;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Collection;
 
@@ -22,7 +23,8 @@ final class AnswerFactory extends Factory
             'teacher_approach_rating' => null,
             'expectation_fulfillment_rating' => null,
             'specialization' => $this->faker->randomElement(StudySpecializationEnum::cases()),
-            'access_token' => $this->faker->uuid()
+            'access_token' => $this->faker->uuid(),
+            'school_id' => School::query()->inRandomOrder()->first()->getKey(),
         ];
     }
 

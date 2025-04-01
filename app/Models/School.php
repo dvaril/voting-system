@@ -13,9 +13,9 @@ final class School extends Model
     /**
      * @var list<string>
      */
-    public $attributes = [
+    public $fillable = [
         'name',
-        'address',
+        'district',
         'city'
     ];
 
