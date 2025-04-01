@@ -69,9 +69,4 @@ enum StudySpecializationEnum: string implements HasLabel, HasIcon, HasColor
             self::ECONOMICS_AND_BUSINESS => '',
         };
     }
-
-    public static function getValues(): array
-    {
-        return array_column(self::cases(), 'value');
-    }
 }

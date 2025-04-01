@@ -5,15 +5,23 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Enums\StudySpecializationEnum;
+use App\Filament\Exports\AnswerExporter;
 use App\Filament\Resources\AnswerResource\Pages;
 use App\Models\Answer;
+use Filament\Actions\Exports\Enums\ExportFormat;
 use Filament\Tables\Grouping\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\{ToggleButtons, Select};
-use Filament\Tables\Actions\{DeleteBulkAction, EditAction, DeleteAction, ActionGroup, RestoreAction, RestoreBulkAction};
+use Filament\Tables\Actions\{DeleteBulkAction,
+    EditAction,
+    DeleteAction,
+    ActionGroup,
+    ExportAction,
+    RestoreAction,
+    RestoreBulkAction};
 use Filament\Tables\Filters\{TrashedFilter, SelectFilter};
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Columns\TextColumn;
@@ -171,6 +179,18 @@ final class AnswerResource extends Resource
                 DeleteBulkAction::make()
                     ->modalHeading(__('answers.resource.table.bulk-actions.delete.modal-heading'))
                     ->modalDescription(__('answers.resource.table.bulk-actions.delete.modal-description'))
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->label(__('answers.resource.table.header-actions.export.label'))
+                    ->modalDescription(__('answers.resource.table.header-actions.export.modal-description'))
+                    ->color('success')
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->formats([
+                        ExportFormat::Csv
+                        // Only Csv is present here because Xlsx had encoding problems when downloading
+                    ])
+                    ->exporter(AnswerExporter::class)
             ]);
     }
 

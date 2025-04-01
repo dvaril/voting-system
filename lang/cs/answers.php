@@ -154,6 +154,45 @@ return [
 
                 ]
 
+            ],
+
+            'header-actions' => [
+
+                'export' => [
+
+                    'label' => 'Exportovat',
+
+                    'modal-description' => 'Vyberte sloupce, které chcete exportovat. Názvy vyexporovaných sloupců můžete změnit',
+
+                    'exported-notification' => [
+
+                        'successful-rows' => [
+
+                            'body' => "Váš export byl dokončen a",
+
+                            'single' => ':count řádek se vyexportoval.',
+
+                            'two-three-four' => ':count řádky se vyexportovaly.',
+
+                            'five-above' => ':count řádků se vyexportovalo.'
+
+                        ],
+
+                        'failed-rows' => [
+
+                            'body' => "Export selhal u ",
+
+                            'single' => ':count řádku.',
+
+                            'two-three-five' => ':count řádků.',
+
+                            'six-above' => ':count řádcích.'
+
+                        ]
+
+                    ]
+                ]
+
             ]
 
         ]
