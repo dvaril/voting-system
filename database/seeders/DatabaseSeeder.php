@@ -22,6 +22,8 @@ final class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
+        $this->call(SchoolSeeder::class);
+
         Answer::factory()->count(50)->createUnansweredRecord();
         Answer::factory()->count(50)->createAnsweredRecord();
     }
