@@ -150,7 +150,7 @@ return [
 
                     'modal-heading' => 'Odstraňujete odpovědi',
 
-                    'modal-description' => 'Opravdu chcete odstranit tuto odpovědi?'
+                    'modal-description' => 'Opravdu chcete odstranit tyto odpovědi?'
 
                 ]
 
