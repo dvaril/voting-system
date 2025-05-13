@@ -20,6 +20,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Spatie\Color\Hex;
 
 final class AdminPanelProvider extends PanelProvider
 {
@@ -28,10 +29,20 @@ final class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
+            ->spa()
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#4d7da7'),
+                'blue' => Color::Blue,
+                'amber' => Color::Amber,
+                'indigo' => Color::Indigo,
+                'yellow' => Color::Yellow,
+                'cyan' => Color::Cyan,
+                'orange' => Color::Orange,
+                'green' => Color::Green,
+                'emerald' => Color::Emerald,
+
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

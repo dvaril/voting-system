@@ -118,6 +118,7 @@ final class AnswerResource extends Resource
                     ->badge()
                     ->getStateUsing(fn (Answer $record): string => $record->specialization->getLabel())
                     ->color(fn (Answer $record): string => $record->specialization->getColor())
+                    ->icon(fn (Answer $record): string => $record->specialization->getIcon())
                     ->searchable(),
                 RatingStar::make('overall_rating')
                     ->label(__('answers.attributes.overall_rating'))

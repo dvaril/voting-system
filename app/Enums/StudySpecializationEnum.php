@@ -42,31 +42,29 @@ enum StudySpecializationEnum: string implements HasLabel, HasIcon, HasColor
 
     public function getIcon(): string
     {
-        // TODO: Add Icons
         return match ($this) {
-            self::INFORMATION_TECHNOLOGY => '',
-            self::MECHANICAL_ELECTROTECHNICIAN => '',
-            self::TECHNICAL_LYCEUM => '',
-            self::ELECTRICIAN => '',
-            self::ELECTROTECHNICS => '',
-            self::ELECTROMECHANIC_FOR_DEVICES_AND_INSTRUMENTS => '',
-            self::SOCIAL_ADMINISTRATION => '',
-            self::ECONOMICS_AND_BUSINESS => '',
+            self::INFORMATION_TECHNOLOGY => 'heroicon-o-computer-desktop',
+            self::MECHANICAL_ELECTROTECHNICIAN => 'heroicon-o-wrench-screwdriver',
+            self::TECHNICAL_LYCEUM => 'heroicon-o-academic-cap',
+            self::ELECTRICIAN => 'heroicon-o-bolt',
+            self::ELECTROTECHNICS => 'heroicon-o-cpu-chip',
+            self::ELECTROMECHANIC_FOR_DEVICES_AND_INSTRUMENTS => 'heroicon-o-cog',
+            self::SOCIAL_ADMINISTRATION => 'heroicon-o-user-group',
+            self::ECONOMICS_AND_BUSINESS => 'heroicon-o-currency-dollar',
         };
     }
 
     public function getColor(): string
     {
-        // TODO: Add Colors
         return match ($this) {
-            self::INFORMATION_TECHNOLOGY => '',
-            self::MECHANICAL_ELECTROTECHNICIAN => '',
-            self::TECHNICAL_LYCEUM => '',
-            self::ELECTRICIAN => '',
-            self::ELECTROTECHNICS => '',
-            self::ELECTROMECHANIC_FOR_DEVICES_AND_INSTRUMENTS => '',
-            self::SOCIAL_ADMINISTRATION => '',
-            self::ECONOMICS_AND_BUSINESS => '',
+            self::INFORMATION_TECHNOLOGY => 'blue',
+            self::MECHANICAL_ELECTROTECHNICIAN => 'amber',
+            self::TECHNICAL_LYCEUM => 'indigo',
+            self::ELECTRICIAN => 'yellow',
+            self::ELECTROTECHNICS => 'cyan',
+            self::ELECTROMECHANIC_FOR_DEVICES_AND_INSTRUMENTS => 'orange',
+            self::SOCIAL_ADMINISTRATION => 'green',
+            self::ECONOMICS_AND_BUSINESS => 'emerald',
         };
     }
 }
