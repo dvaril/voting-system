@@ -190,7 +190,7 @@ return [
 
             'expired-token' => 'Čas na vyplnění formuláře vypršel.',
 
-            'answered' => 'Tento formulář byl již vyplně. Děkujeme!'
+            'answered' => 'Tento formulář byl již vyplněn. Děkujeme!'
 
         ]
 

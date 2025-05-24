@@ -16,7 +16,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('answers', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('access_token');
             $table->string('specialization', 255);
             $table->unsignedTinyInteger('overall_rating')->nullable()->default(null);
@@ -25,7 +25,6 @@ return new class extends Migration
             $table->dateTime('answered_at')->nullable()->default(null);
             $table->foreignIdFor(School::class)->nullable()->default(null)->constrained('schools');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

@@ -7,6 +7,7 @@ namespace App\Models;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -22,6 +23,7 @@ final class User extends Authenticatable implements FilamentUser
     protected $fillable = [
         'name',
         'email',
+        'answer_id',
         'password',
     ];
 
@@ -46,6 +48,11 @@ final class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function activeAnswer(): BelongsTo
+    {
+        return $this->belongsTo(Answer::class);
     }
 
     public function canAccessPanel(Panel $panel): bool
