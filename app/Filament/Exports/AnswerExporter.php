@@ -9,7 +9,7 @@ use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
 
-class AnswerExporter extends Exporter
+final class AnswerExporter extends Exporter
 {
     protected static ?string $model = Answer::class;
 

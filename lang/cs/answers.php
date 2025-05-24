@@ -69,13 +69,14 @@ return [
 
             ],
 
-            'export' => [
+            'qr-code-window' => [
 
-                'label' => '',
+                'label' => 'Ukázat QR kód',
 
-                'modal-heading' => '',
+                'modal-heading' => 'Ukázat QR kód',
 
-                'modal-description' => '',
+                'modal-description' => 'Tato akce otevře nebo aktualizuje QR kód v novém okně prohlížeče.'
+
             ]
 
         ],
@@ -108,15 +109,6 @@ return [
 
                 ],
 
-                'restore' => [
-
-                    'modal-heading' => 'Obnovujete odpověď z historie',
-
-                    'modal-description' => 'Opravdu chcete obnovit tuto odpověď z historie?'
-
-                ],
-
-
                 'delete' => [
 
                     'modal-heading' => 'Odstraňujete odpověď',
@@ -136,15 +128,6 @@ return [
             ],
 
             'bulk-actions' => [
-
-                'restore' => [
-
-                    'modal-heading' => 'Obnovujete odpovědi z historie',
-
-                    'modal-description' => 'Opravdu chcete obnovit tyto odpovědi z historie?'
-
-                ],
-
 
                 'delete' => [
 
@@ -194,6 +177,20 @@ return [
                 ]
 
             ]
+
+        ]
+
+    ],
+
+    'qr-code-page' => [
+
+        'title' => 'Odpovědi',
+
+        'errors' => [
+
+            'expired-token' => 'Čas na vyplnění formuláře vypršel.',
+
+            'answered' => 'Tento formulář byl již vyplně. Děkujeme!'
 
         ]
 

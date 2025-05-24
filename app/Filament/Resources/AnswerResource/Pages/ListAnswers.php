@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\AnswerResource\Pages;
 
 use App\Filament\Resources\AnswerResource;
@@ -9,7 +11,7 @@ use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Enums\MaxWidth;
 use Illuminate\Contracts\Support\Htmlable;
 
-class ListAnswers extends ListRecords
+final class ListAnswers extends ListRecords
 {
     protected static string $resource = AnswerResource::class;
 
@@ -26,7 +28,8 @@ class ListAnswers extends ListRecords
                 ->modalHeading(__('answers.resource.actions.create.modal-heading'))
                 ->modalDescription(__('answers.resource.actions.create.modal-description'))
                 ->modalWidth(MaxWidth::FourExtraLarge)
-                ->icon('heroicon-o-plus'),
+                ->icon('heroicon-o-plus')
+                ->after(fn (Answer $record) => AnswerResource::openQrCodeWindow($this, $record)),
         ];
     }
 }

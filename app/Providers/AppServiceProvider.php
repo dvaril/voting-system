@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Filament\Resources\AnswerResource\Pages\ListAnswers;
+use Filament\Support\Facades\FilamentView;
 use Filament\Support\View\Components\Modal;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
@@ -55,5 +58,11 @@ final class AppServiceProvider extends ServiceProvider
     private function configureFilament(): void
     {
         Modal::closedByClickingAway(false);
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::PAGE_END,
+            fn () => view('qr-code-window-handler'),
+            ListAnswers::class
+        );
     }
 }

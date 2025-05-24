@@ -7,22 +7,17 @@ namespace App\Filament\Resources;
 use App\Enums\StudySpecializationEnum;
 use App\Filament\Exports\AnswerExporter;
 use App\Filament\Resources\AnswerResource\Pages;
+use App\Livewire\QrCodePage;
 use App\Models\Answer;
 use Filament\Actions\Exports\Enums\ExportFormat;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Grouping\Group;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\{ToggleButtons, Select};
-use Filament\Tables\Actions\{DeleteBulkAction,
-    EditAction,
-    DeleteAction,
-    ActionGroup,
-    ExportAction,
-    RestoreAction,
-    RestoreBulkAction};
-use Filament\Tables\Filters\{TrashedFilter, SelectFilter};
+use Filament\Tables\Actions\{Action, DeleteBulkAction, EditAction, DeleteAction, ActionGroup, ExportAction};
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -54,8 +49,6 @@ final class AnswerResource extends Resource
         return __('answers.resource.navigation-label');
     }
 
-    // TODO: Disable fields below on specific livewire component when implemented
-
     public static function form(Form $form): Form
     {
         return $form
@@ -64,6 +57,7 @@ final class AnswerResource extends Resource
                 Select::make('school_id')
                     ->label(__('answers.attributes.school-name'))
                     ->relationship('school', 'name')
+                    ->hidden(self::isOnQrCodePage(...))
                     ->searchable(),
                 ToggleButtons::make('specialization')
                     ->label(__('answers.attributes.specialization.name'))
@@ -71,22 +65,39 @@ final class AnswerResource extends Resource
                     ->required()
                     ->columns(4)
                     ->gridDirection('row')
+                    ->hidden(self::isOnQrCodePage(...))
                     ->validationMessages([
                         'required' => __('answers.resource.form.components.specialization.required-validation-message')
                     ]),
                 FormRatingStart::make('overall_rating')
                     ->label(__('answers.attributes.overall_rating'))
                     ->hiddenOn('create')
-                    ->disabled(fn (Answer $record) => $record->isAnswered()),
+                    ->disabled(self::isFormRatingStarDisabled(...)),
                 FormRatingStart::make('teacher_approach_rating')
                     ->label(__('answers.attributes.teacher_approach_rating'))
                     ->hiddenOn('create')
-                    ->disabled(fn (Answer $record) => $record->isAnswered()),
+                    ->disabled(self::isFormRatingStarDisabled(...)),
                 FormRatingStart::make('expectation_fulfillment_rating')
                     ->label(__('answers.attributes.expectation_fulfillment_rating'))
                     ->hiddenOn('create')
-                    ->disabled(fn (Answer $record) => $record->isAnswered()),
+                    ->disabled(self::isFormRatingStarDisabled(...)),
             ]);
+    }
+
+    private static function isOnQrCodePage(HasForms $livewire): bool
+    {
+        return $livewire instanceof QrCodePage;
+    }
+
+    /**
+     * @param  HasForms $livewire
+     * @param  Answer $record
+     *
+     * @return bool
+     */
+    private static function isFormRatingStarDisabled(HasForms $livewire, Answer $record): bool
+    {
+        return $record->isAnswered() || ! self::isOnQrCodePage($livewire);
     }
 
     public static function table(Table $table): Table
@@ -151,32 +162,27 @@ final class AnswerResource extends Resource
                     ->label(__('answers.attributes.specialization.name'))
                     ->options(StudySpecializationEnum::class)
                     ->searchable()
-                    ->multiple(),
-                TrashedFilter::make()
+                    ->multiple()
             ])
             ->actions([
                 ActionGroup::make([
+                    self::configureOpenQrCodeWindow(Action::make('openQrCodeWindow')),
                     EditAction::make()
-                        ->modalHeading(__('answers.resource.table.actions.edit.modal-heading'))
-                        ->modalDescription(fn (Answer $record): string => __('answers.resource.table.actions.edit.modal-description', [
+                         ->modalHeading(__('answers.resource.table.actions.edit.modal-heading'))
+                         ->modalDescription(fn (Answer $record): string => __('answers.resource.table.actions.edit.modal-description', [
                             'date' => $record->created_at->format('d. m. Y - H:i:s')
-                        ]))
+                         ]))
+                        ->extraModalFooterActions([
+                            self::configureOpenQrCodeWindow(Action::make('openQrCodeWindow')),
+                        ])
                         ->color('primary')
                         ->modalWidth(MaxWidth::FourExtraLarge),
-                    RestoreAction::make()
-                        ->modalHeading(__('answers.resource.table.actions.restore.modal-heading'))
-                        ->modalDescription(__('answers.resource.table.actions.restore.modal-description'))
-                        ->color('success'),
                     DeleteAction::make()
                         ->modalHeading(__('answers.resource.table.actions.delete.modal-heading'))
                         ->modalDescription(__('answers.resource.table.actions.delete.modal-description')),
                 ])
             ])
             ->bulkActions([
-                RestoreBulkAction::make()
-                    ->modalHeading(__('answers.resource.table.bulk-actions.restore.modal-heading'))
-                    ->modalDescription(__('answers.resource.table.bulk-actions.restore.modal-description'))
-                    ->color('success'),
                 DeleteBulkAction::make()
                     ->modalHeading(__('answers.resource.table.bulk-actions.delete.modal-heading'))
                     ->modalDescription(__('answers.resource.table.bulk-actions.delete.modal-description'))
@@ -195,18 +201,40 @@ final class AnswerResource extends Resource
             ]);
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
-    }
-
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListAnswers::route('/'),
         ];
+    }
+
+    /**
+     * @param  Action $action
+     *
+     * @return Action
+     */
+    private static function configureOpenQrCodeWindow(Action $action): Action
+    {
+        return $action
+            ->label(__('answers.resource.actions.qr-code-window.label'))
+            ->requiresConfirmation()
+            ->modalHeading(__('answers.resource.actions.qr-code-window.modal-heading'))
+            ->modalDescription(__('answers.resource.actions.qr-code-window.modal-description'))
+            ->color('success')
+            ->icon('heroicon-o-qr-code')
+            ->action(self::openQrCodeWindow(...));
+    }
+
+    /**
+     * @param  HasTable | HasForms $livewire
+     * @param  Answer $record
+     *
+     * @return void
+     */
+    public static function openQrCodeWindow(HasTable | HasForms $livewire, Answer $record): void
+    {
+        $livewire->dispatch('open-qr-code-window',
+            recordKey: $record->getKey()
+        );
     }
 }
